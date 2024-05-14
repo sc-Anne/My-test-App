@@ -37,10 +37,9 @@ function App() {
         });
         array.sort((a, b) => b.cvalue - a.cvalue);
         setCountry(array);
-        seselC(country?.[0]?.cname);
+        seselC(array?.[0]?.cname);
       })
       .catch(error => console.error(error));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChange = useCallback((item: any) => {
@@ -49,8 +48,8 @@ function App() {
 
   useEffect(() => {
     const curi = country.find((opt: any) => opt.cname === selC);
-    setUsers(curi?.citems);
-    setallUsers(curi?.citems);
+    setUsers(curi?.citems?.sort((a: any, b: any) => Date.parse(b?.registered?.date) - Date.parse(a?.registered?.date)));
+    setallUsers(curi?.citems?.sort((a: any, b: any) => Date.parse(b?.registered?.date) - Date.parse(a?.registered?.date)));
   }, [country, selC]);
 
     
@@ -58,7 +57,6 @@ function App() {
     seSex(item.target.value);
     setUsers(() => allusers?.filter((opt: any) => item.target.value ? opt?.gender === item.target.value : opt))
   }, [allusers]);
- 
 
   return (
     <div className="App">
@@ -91,7 +89,7 @@ function App() {
         
 
         {
-          users?.map((item: any) => <div style={{display: "flex"}}>
+          users?.map((item: any) => <div style={{display: "flex"}} key={item?.id?.value}>
             <div style={{marginRight: 10}}>{`${item?.name?.first}${item?.name?.title}${item?.name?.last}`}</div>
             <div style={{marginRight: 10}}>{`${item?.gender === "male" ? "男" : "女"}`}</div>
             <div style={{marginRight: 10}}>{`${item?.location?.city}`}</div>
